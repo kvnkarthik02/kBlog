@@ -1,0 +1,29 @@
+{
+  "name": "kblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start2": "ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "dev" : "nodemon dist/index.js",
+    "watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kvnkarthik02/kBlog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kvnkarthik02/kBlog/issues"
+  },
+  "homepage": "https://github.com/kvnkarthik02/kBlog#readme",
+  "devDependencies": {
+    "@types/node": "^18.11.12",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
+}
