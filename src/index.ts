@@ -23,7 +23,7 @@ const main = async () => {
         // });
         // await orm.em.persistAndFlush(post);
         const posts = await orm.em.find(Post,{});
-        console.log(posts);
+        console.log(posts); 
     });
 
 }
