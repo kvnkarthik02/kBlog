@@ -17,13 +17,14 @@ const Post_1 = require("./entities/Post");
 const mikro_orm_config_1 = __importDefault(require("./mikro-orm.config"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const orm = yield core_1.MikroORM.init(mikro_orm_config_1.default);
-    const post = orm.em.create(Post_1.Post, {
-        title: 'first post',
-        createdAt: "",
-        updatedAt: ""
-    });
-    yield orm.em.persistAndFlush(post);
-    yield orm.em.nativeInsert(Post_1.Post, { title: 'first post' });
+    yield orm.getMigrator().up();
+    yield core_1.RequestContext.createAsync(orm.em, () => __awaiter(void 0, void 0, void 0, function* () {
+        const posts = yield orm.em.find(Post_1.Post, {});
+        console.log(posts);
+    }));
+});
+main().catch((err) => {
+    console.error(err);
 });
 console.log("hello world!");
 //# sourceMappingURL=index.js.map

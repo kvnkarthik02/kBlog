@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Post = void 0;
-const decorators_1 = require("@mikro-orm/core/decorators");
+const core_1 = require("@mikro-orm/core");
 let Post = class Post {
     constructor() {
         this.createdAt = new Date();
@@ -18,23 +18,23 @@ let Post = class Post {
     }
 };
 __decorate([
-    (0, decorators_1.PrimaryKey)(),
+    (0, core_1.PrimaryKey)(),
     __metadata("design:type", Number)
 ], Post.prototype, "id", void 0);
 __decorate([
-    (0, decorators_1.Property)(),
+    (0, core_1.Property)({ type: 'date' }),
     __metadata("design:type", Object)
 ], Post.prototype, "createdAt", void 0);
 __decorate([
-    (0, decorators_1.Property)({ onUpdate: () => new DataTransfer() }),
+    (0, core_1.Property)({ type: 'date', onUpdate: () => new DataTransfer() }),
     __metadata("design:type", Object)
 ], Post.prototype, "updatedAt", void 0);
 __decorate([
-    (0, decorators_1.Property)(),
+    (0, core_1.Property)({ type: 'text' }),
     __metadata("design:type", String)
 ], Post.prototype, "title", void 0);
 Post = __decorate([
-    (0, decorators_1.Entity)()
+    (0, core_1.Entity)()
 ], Post);
 exports.Post = Post;
 //# sourceMappingURL=Post.js.map
