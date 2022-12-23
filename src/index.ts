@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import {MikroORM, RequestContext} from "@mikro-orm/core";
 import { __prod__ } from "./constants";
 import { Post } from "./entities/Post";
@@ -13,6 +14,9 @@ const main = async () => {
     await orm.getMigrator().up();
 
     const app = express();
+    await RequestContext.createAsync(orm.em, async () => {
+        
+    })
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [HelloResolver, PostResolver],
@@ -20,7 +24,7 @@ const main = async () => {
         }),
         context: () => ({em: orm.em})
     });
-    
+
     await apolloServer.start();
     apolloServer.applyMiddleware({app});
 
@@ -32,4 +36,3 @@ const main = async () => {
 main().catch((err)=>{
     console.error(err);
 });
-console.log("hello world!");
