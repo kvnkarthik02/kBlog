@@ -104,7 +104,7 @@ export class UserResolver{
     @Mutation(()=> UserResponse) //not sure why the login function is a mutator function
     async login(
         @Arg('input', () => UsernamePasswordInput) input: UsernamePasswordInput,
-        @Ctx() {em}: MyContext
+        @Ctx() {em,req}: MyContext
     ): Promise<UserResponse>{
         const user = await em.findOne(User, {username: input.username});
         if(!user){
@@ -127,6 +127,9 @@ export class UserResolver{
                 ],
             };
         }
+        req.session!.userId = user.id;
+        
+
         return {
             user
         };

@@ -129,7 +129,7 @@ let UserResolver = class UserResolver {
             };
         });
     }
-    login(input, { em }) {
+    login(input, { em, req }) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield em.findOne(User_1.User, { username: input.username });
             if (!user) {
@@ -152,6 +152,7 @@ let UserResolver = class UserResolver {
                     ],
                 };
             }
+            req.session.userId = user.id;
             return {
                 user
             };
