@@ -72,6 +72,15 @@ function containsNumber(str) {
     return /\d/.test(str);
 }
 let UserResolver = class UserResolver {
+    me({ req, em }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!req.session.userId) {
+                return null;
+            }
+            const user = yield em.findOne(User_1.User, { id: req.session.userId });
+            return user;
+        });
+    }
     users({ em }) {
         return em.find(User_1.User, {});
     }
@@ -81,7 +90,7 @@ let UserResolver = class UserResolver {
             return true;
         });
     }
-    register(input, { em }) {
+    register(input, { em, req }) {
         return __awaiter(this, void 0, void 0, function* () {
             if (input.username.length <= 2) {
                 return {
@@ -124,6 +133,7 @@ let UserResolver = class UserResolver {
                     };
                 }
             }
+            req.session.userId = user.id;
             return {
                 user
             };
@@ -145,20 +155,28 @@ let UserResolver = class UserResolver {
             const valid = yield argon2_1.default.verify(user.password, input.password);
             if (!valid) {
                 return {
-                    errors: [{
+                    errors: [
+                        {
                             field: "password",
                             message: "incorrect password",
-                        }
+                        },
                     ],
                 };
             }
             req.session.userId = user.id;
             return {
-                user
+                user,
             };
         });
     }
 };
+__decorate([
+    (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "me", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [User_1.User]),
     __param(0, (0, type_graphql_1.Ctx)()),
@@ -184,7 +202,7 @@ __decorate([
 ], UserResolver.prototype, "register", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
-    __param(0, (0, type_graphql_1.Arg)('input', () => UsernamePasswordInput)),
+    __param(0, (0, type_graphql_1.Arg)("input", () => UsernamePasswordInput)),
     __param(1, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [UsernamePasswordInput, Object]),

@@ -8,7 +8,7 @@ import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
-import redis from 'redis';
+import * as redis from 'redis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import {createClient} from "redis";
@@ -21,13 +21,16 @@ const main = async () => {
     const app = express();
 
     const RedisStore = connectRedis(session)
-    const redisClient = createClient()
-    redisClient.connect().catch(console.error)
+    const redisClient = createClient({
+        legacyMode:true,
+    });
+    await redisClient.connect();
+    // app.set('trust proxy', process.env.NODE_ENV !== 'production')
     app.use(
         session({
             name: 'qid',
             store: new RedisStore({ 
-                client: redisClient, 
+                client: redisClient as any, 
                 disableTouch: true
              }),
              cookie:{
@@ -37,7 +40,7 @@ const main = async () => {
                 sameSite: 'lax', //csrf stuff, complex dont worry about it
              },
             saveUninitialized: false,
-            secret: "asdfsdfasdfsafsdf",
+            secret: "test",
             resave: false,
         })
       )
@@ -45,9 +48,9 @@ const main = async () => {
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [HelloResolver, PostResolver, UserResolver],
-            validate: false
+            validate: false,
         }),
-        context: ({req,res}): MyContext => ({em: orm.em, req, res})
+        context: ({req,res}): MyContext => ({em: orm.em, req, res}),
     });
 
     await apolloServer.start();

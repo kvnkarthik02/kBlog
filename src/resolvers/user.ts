@@ -34,6 +34,19 @@ function containsNumber(str: string) {
 
 @Resolver()
 export class UserResolver{
+
+    @Query(() =>User, {nullable: true})
+    async me(
+        @Ctx() {req, em} : MyContext
+    ){
+        // console.log("session:", req.session);
+        if(!req.session.userId){ //not logged in
+            return null;
+        }
+        const user = await em.findOne(User, {id: req.session.userId});
+        return user;
+    }
+
     @Query(()=> [User])  //get all users
     users(
         @Ctx() {em}: MyContext): Promise<User[]>{
@@ -52,7 +65,7 @@ export class UserResolver{
     @Mutation(()=> UserResponse)
     async register(
         @Arg('input', () => UsernamePasswordInput) input: UsernamePasswordInput,
-        @Ctx() {em}: MyContext
+        @Ctx() {em, req}: MyContext
     ): Promise<UserResponse>{
         if(input.username.length<=2){
             return {
@@ -96,6 +109,9 @@ export class UserResolver{
                 };
             }
         }
+        //login the user after registering and save their cookie
+        req.session!.userId = user.id;
+
         return {
             user
         };
@@ -103,7 +119,7 @@ export class UserResolver{
 
     @Mutation(()=> UserResponse) //not sure why the login function is a mutator function
     async login(
-        @Arg('input', () => UsernamePasswordInput) input: UsernamePasswordInput,
+        @Arg("input", () => UsernamePasswordInput) input: UsernamePasswordInput,
         @Ctx() {em,req}: MyContext
     ): Promise<UserResponse>{
         const user = await em.findOne(User, {username: input.username});
@@ -120,10 +136,11 @@ export class UserResolver{
         const valid = await argon2.verify(user.password, input.password);
         if(!valid){
             return {
-                errors: [{
+                errors: [
+                    {
                         field: "password",
                         message:"incorrect password",
-                    }
+                    },
                 ],
             };
         }
@@ -131,7 +148,7 @@ export class UserResolver{
         
 
         return {
-            user
+            user,
         };
     }
 

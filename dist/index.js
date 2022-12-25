@@ -30,8 +30,10 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield orm.getMigrator().up();
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
-    const redisClient = (0, redis_1.createClient)();
-    redisClient.connect().catch(console.error);
+    const redisClient = (0, redis_1.createClient)({
+        legacyMode: true,
+    });
+    yield redisClient.connect();
     app.use((0, express_session_1.default)({
         name: 'qid',
         store: new RedisStore({
@@ -45,15 +47,15 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             sameSite: 'lax',
         },
         saveUninitialized: false,
-        secret: "asdfsdfasdfsafsdf",
+        secret: "test",
         resave: false,
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield (0, type_graphql_1.buildSchema)({
             resolvers: [hello_1.HelloResolver, post_1.PostResolver, user_1.UserResolver],
-            validate: false
+            validate: false,
         }),
-        context: ({ req, res }) => ({ em: orm.em, req, res })
+        context: ({ req, res }) => ({ em: orm.em, req, res }),
     });
     yield apolloServer.start();
     apolloServer.applyMiddleware({ app });
