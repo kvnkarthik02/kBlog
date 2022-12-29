@@ -23,6 +23,7 @@
   "homepage": "https://github.com/kvnkarthik02/kBlog#readme",
   "devDependencies": {
     "@types/connect-redis": "^0.0.19",
+    "@types/cors": "^2.8.13",
     "@types/express": "^4.17.15",
     "@types/express-session": "^1.17.5",
     "@types/node": "^18.11.12",
