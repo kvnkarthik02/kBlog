@@ -16,6 +16,7 @@ export type Scalars = {
 };
 
 export type FieldError = {
+  forEach(arg0: ({ field, message }: { field: any; message: any; }) => void): unknown;
   __typename?: 'FieldError';
   field: Scalars['String'];
   message: Scalars['String'];

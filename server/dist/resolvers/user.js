@@ -127,7 +127,7 @@ let UserResolver = class UserResolver {
                         errors: [
                             {
                                 field: "username",
-                                message: "username already exists",
+                                message: "Username already exists",
                             },
                         ],
                     };

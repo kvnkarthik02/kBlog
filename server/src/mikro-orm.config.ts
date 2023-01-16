@@ -12,7 +12,7 @@ export default {
     entities: [Post, User],
     dbName : "kBlogs",
     user: "postgres",
-    password: "Lcwboleh02!",
+    password: "Lcwboleh02",
     debug: !__prod__,
     type: "postgresql"
 } as Parameters<typeof MikroORM.init>[0]; // magic code for removing type error in init function in index.ts 

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {MikroORM, RequestContext} from "@mikro-orm/core";
+import {MikroORM} from "@mikro-orm/core";
 import { __prod__ } from "./constants";
 import microConfig from "./mikro-orm.config";
 import express from 'express';
