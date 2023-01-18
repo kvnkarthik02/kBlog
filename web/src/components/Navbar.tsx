@@ -1,12 +1,15 @@
 import React from "react";
 import { Box, Link, Flex, Button } from "@chakra-ui/core";
 import NextLink from "next/link";
-import { useMeQuery } from "../gql/graphql";
+import { useLogoutMutation, useMeQuery } from "../gql/graphql";
+import { useRouter } from "next/router";
 
 interface NavBarProps {}
 
 export const Navbar: React.FC<NavBarProps> = ({}) => {
+  const [{fetching:logoutFetching}, logout] = useLogoutMutation();
   const [{ data, fetching }] = useMeQuery();
+  const router = useRouter();
   let body = null;
 
   // data is loading
@@ -28,13 +31,25 @@ export const Navbar: React.FC<NavBarProps> = ({}) => {
     body = (
       <Flex>
         <Box mr={3}>{data.me.username}</Box>
-        <Button variant="link">Logout</Button>
+        <Button
+          onClick={() => {
+            logout();
+            //can simply update cache using graphcache in _app.tsx instead of just reloading the window. 
+            //but reloading just for visual effects lol
+            window.location.reload();            
+          }}
+          isLoading={logoutFetching}
+          variant="link"
+          
+        >
+          Logout
+        </Button>
       </Flex>
     );
   }
 
   return (
-    <Flex bg="tomato" p={4}>
+    <Flex bg='#319795' p={4}>
       <Box ml={"auto"}>{body}</Box>
     </Flex>
   );

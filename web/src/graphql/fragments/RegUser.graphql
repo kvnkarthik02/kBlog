@@ -1,0 +1,6 @@
+# in case we want to use more characteristics in the future
+
+fragment RegUser on User{
+    id
+    username
+}

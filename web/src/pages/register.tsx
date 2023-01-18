@@ -68,3 +68,22 @@ const Register: React.FC<registerProps> = ({}) => {
 };
 
 export default Register;
+
+
+//because codegen and urql is so annoying, keeping this here everytime i run yarn gen
+
+// export function useLoginMutation() {
+//   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+// };
+
+// export function useRegisterMutation() {
+//   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+// };
+
+// export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+//   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+// };
+
+// export function useLogoutMutation(){
+//   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
+// };
