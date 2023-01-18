@@ -1,16 +1,41 @@
-import { Box, Flex, Link } from '@chakra-ui/core'
-import React from 'react'
+import React from "react";
+import { Box, Link, Flex, Button } from "@chakra-ui/core";
+import NextLink from "next/link";
+import { useMeQuery } from "../gql/graphql";
 
-interface NavbarProps {
+interface NavBarProps {}
 
-}
+export const Navbar: React.FC<NavBarProps> = ({}) => {
+  const [{ data, fetching }] = useMeQuery();
+  let body = null;
 
-export const Navbar: React.FC<NavbarProps> = ({}) => (
-    <Flex bg="teal.500" padding={4} marginLeft={'auto'}>
-        <Box ml={'auto'}>
-            <Link mr={4} href='/login'>Login</Link>
-            <Link href='/register'>Register</Link>
-        </Box>
-        
+  // data is loading
+  if (fetching) {
+    // user not logged in
+  } else if (!data?.me) {
+    body = (
+      <>
+        <NextLink href="/login">
+          <Link mr={2}>login</Link>
+        </NextLink>
+        <NextLink href="/register">
+          <Link>register</Link>
+        </NextLink>
+      </>
+    );
+    // user is logged in
+  } else {
+    body = (
+      <Flex>
+        <Box mr={3}>{data.me.username}</Box>
+        <Button variant="link">Logout</Button>
+      </Flex>
+    );
+  }
+
+  return (
+    <Flex bg="tomato" p={4}>
+      <Box ml={"auto"}>{body}</Box>
     </Flex>
-)
+  );
+};

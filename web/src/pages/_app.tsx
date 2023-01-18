@@ -1,5 +1,6 @@
 import { ThemeProvider, CSSReset, ColorModeProvider } from '@chakra-ui/core'
-import { createClient, Provider } from 'urql'
+import {createClient, dedupExchange, fetchExchange, Provider } from 'urql'
+import { cacheExchange } from '@urql/exchange-graphcache';
 import theme from '../theme'
 
 const client = createClient(
@@ -8,6 +9,8 @@ const client = createClient(
     fetchOptions: {
       credentials:"include",
     },
+    exchanges: [dedupExchange, cacheExchange({}), fetchExchange]
+    
 });
 
 function MyApp({ Component, pageProps }) {
