@@ -1,18 +1,14 @@
-import React from "react";
-import { Formik, Form } from "formik";
 import {
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
   Box,
-  Button,
+  Button
 } from "@chakra-ui/core";
-import { Wrapper } from "../components/Wrapper";
+import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
+import React from "react";
 import { InputField } from "../components/InputField";
+import { Wrapper } from "../components/Wrapper";
 import { useRegisterMutation } from "../gql/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
-import { useRouter } from "next/router";
 
 interface registerProps {}
 
@@ -86,4 +82,8 @@ export default Register;
 
 // export function useLogoutMutation(){
 //   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
+// };
+
+// export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
+//   return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
 // };
