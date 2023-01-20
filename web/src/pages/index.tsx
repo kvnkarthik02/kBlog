@@ -7,7 +7,7 @@ const Index = () => {
   const [{ data }] = usePostsQuery();
   return (
     <>
-      <Navbar />
+    <Navbar />
       <div>hello world</div>
       <br />
       {!data ? (

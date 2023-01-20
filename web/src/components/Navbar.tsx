@@ -6,10 +6,17 @@ import { useLogoutMutation, useMeQuery } from "../gql/graphql";
 
 interface NavBarProps {}
 
+export const isServer = () => {
+  typeof window === "undefined";
+}
+
 export const Navbar: React.FC<NavBarProps> = ({}) => {
   const [{fetching:logoutFetching}, logout] = useLogoutMutation();
-  const [{ data, fetching }] = useMeQuery();
-  const router = useRouter();
+  const [{ data, fetching }] = useMeQuery({
+    pause: isServer(),
+  });
+
+
   let body = null;
 
   // data is loading

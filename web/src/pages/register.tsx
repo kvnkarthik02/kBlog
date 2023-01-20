@@ -65,7 +65,7 @@ const Register: React.FC<registerProps> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Register);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Register);  //all pages need access to the client (createUrqlClient) inorder to work
 
 
 //because codegen and urql is so annoying, keeping this here everytime i run yarn gen
