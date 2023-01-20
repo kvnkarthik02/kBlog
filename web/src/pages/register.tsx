@@ -3,12 +3,14 @@ import {
   Button
 } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
+import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Wrapper } from "../components/Wrapper";
 import { useRegisterMutation } from "../gql/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
+import { createUrqlClient } from "../utils/urqlClient";
 
 interface registerProps {}
 
@@ -63,7 +65,7 @@ const Register: React.FC<registerProps> = ({}) => {
   );
 };
 
-export default Register;
+export default withUrqlClient(createUrqlClient, { ssr: true })(Register);
 
 
 //because codegen and urql is so annoying, keeping this here everytime i run yarn gen
